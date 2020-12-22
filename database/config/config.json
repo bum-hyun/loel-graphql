@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "qjagus12",
+    "database": "loel",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "loel_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "loel_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
