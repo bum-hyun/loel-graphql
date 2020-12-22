@@ -1,26 +1,25 @@
-const Sequelize = require('sequelize');
-
-module.exports = class Post extends Sequelize.Model {
-  static init(sequelize) {
-    return super.init({
+module.exports = (sequelize, DataTypes) => {
+  const Post = sequelize.define(
+    "Post",
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      category: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       html: {
-        type: Sequelize.TEXT("long"),
+        type: DataTypes.STRING,
         allowNull: false,
       },
       markdown: {
-        type: Sequelize.TEXT("long"),
-        allowNull: false,
-      },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      category: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       image: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true,
         get() {
           const arr = this.getDataValue("image") ? this.getDataValue("image").split(",") : null;
@@ -31,22 +30,28 @@ module.exports = class Post extends Sequelize.Model {
         }
       },
       email: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
-    }, {
-      sequelize,
-      timestamps: true,
+    },
+    {
+      defaultScope: {
+        rawAttributes: { exclude: ["deletedAt"] }
+      },
       underscored: true,
-      modelName: 'Post',
-      tableName: 'posts',
-      paranoid: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
-    });
+      paranoid: true,
+      modelName: 'Post',
+      tableName: 'posts',
+      timestamps: false
+    },
+  );
+
+  Post.associate = (models) => {
+    Post.belongsTo(models.User, { foreignKey: "email" })
+    Post.hasMany(models.Comment, { foreignKey: 'postId', as: 'comments' });
   }
-  static associate(db) {
-    db.Post.belongsTo(db.User, { foreignKey: "email", sourceKey: "email" });
-    db.Post.belongsTo(db.Category, { foreignKey: "category", targetKey: "category" })
-  }
-};
+
+  return Post;
+}

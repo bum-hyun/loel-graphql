@@ -1,40 +1,42 @@
-const Sequelize = require('sequelize');
-
-module.exports = class Category extends Sequelize.Model {
-  static init(sequelize) {
-    return super.init({
+module.exports = (sequelize, DataTypes) => {
+  const Category = sequelize.define(
+    "Category",
+    {
       category: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       link: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       order: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       parent: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: true,
       },
       isUse: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       }
-    }, {
-      sequelize,
-      timestamps: true,
+    },
+    {
       underscored: true,
-      modelName: 'Category',
-      tableName: 'categories',
-      paranoid: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
-    });
+      paranoid: true,
+      modelName: 'Category',
+      tableName: 'categories',
+      timestamps: false
+    },
+  );
+
+  Category.associate = (models) => {
+    Category.hasMany(models.Post, { foreignKey: 'category' });
   }
-  static associate(db) {
-    db.Category.hasMany(db.Post, { foreignKey: "category", targetKey: "category" });
-  }
-};
+
+  return Category;
+}

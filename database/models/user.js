@@ -1,32 +1,50 @@
-const Sequelize = require('sequelize');
+const bcrypt = require("bcrypt");
 
-module.exports = class User extends Sequelize.Model {
-  static init(sequelize) {
-    return super.init({
-      email: {
-        type: Sequelize.STRING(40),
-        primaryKey: true,
-      },
+module.exports = (sequelize, DataTypes) => { 
+  const User = sequelize.define(
+    "User",
+    {
       name: {
-        type: Sequelize.STRING(15),
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      email: {
+        type: DataTypes.STRING,
+        primaryKey: true,
         allowNull: false,
       },
       password: {
-        type: Sequelize.STRING(100),
+        type: DataTypes.STRING,
         allowNull: true,
       },
-    }, {
-      sequelize,
+    },
+    {
+      defaultScope: {
+        rawAttributes: { exclude: ["password"] }
+      },
       underscored: true,
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
       paranoid: true,
       modelName: 'User',
       tableName: 'users',
-      timestamps: true,
-    });
+      timestamps: false
+    },
+  );
+  
+  User.beforeCreate(async (user) => { 
+    user.password = await user.generatePasswordHash();
+  });
+  
+  User.prototype.generatePasswordHash = () => { 
+    if (this.password) {
+      return bcrypt.hash(this.password, 10);
+    }
+  };
+  
+  User.associate = (models) => { 
+    User.hasMany(models.Post, { foreignKey: "email" })
   }
-  static associate(db) {
-    db.User.hasMany(db.Post, { foreignKey: "email", targetKey: "email" });
-  }
-};
+  
+  return User;
+}
