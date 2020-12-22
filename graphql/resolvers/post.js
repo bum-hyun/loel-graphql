@@ -25,16 +25,13 @@ module.exports = {
         limit: 8
       });
     },
-    async getSinglePost(_, { postId }, context) {
-      return Post.findByPk(postId);
+    async getPost(_, { id }, context) {
+      return Post.findByPk(id);
     },
   },
   Post: {
     user(post) {
       return post.getUser();
-    },
-    comments(post) {
-      return post.getComments();
     },
   },
 };

@@ -7,6 +7,11 @@ module.exports = gql`
     password: String!
   }
   
+  type Author {
+    name: String!
+    email: String!
+  }
+  
   extend type Mutation {
     register(input: RegisterInput!): RegisterResponse
     login(input: LoginInput!): LoginResponse

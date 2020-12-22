@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
       modelName: 'Post',
       tableName: 'posts',
-      timestamps: false
+      timestamps: true
     },
   );
 
