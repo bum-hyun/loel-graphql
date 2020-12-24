@@ -17,7 +17,7 @@ module.exports = gql`
   
   extend type Query {
     getAllPosts: [CategoryPostResponse!]
-    getCategoryPosts: [Post!]
+    getCategoryPosts(category: String!): [Post!]
     getPost(id: String!): Post
   }
   
