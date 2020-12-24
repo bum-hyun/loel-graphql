@@ -8,7 +8,7 @@ module.exports = {
       if (!user) {
         throw new AuthenticationError('You must login to create a post');
       }
-      return Post.create({
+      return await Post.create({
         email,
         category,
         title,
@@ -17,16 +17,64 @@ module.exports = {
         image
       });
     },
+    async removePost(_, { id }) {
+      return await Post.destroy({ where: { id } });
+    }
   },
   Query: {
-    async getAllPosts(root, args, context) {
-      return Post.findAll({      
+    async getAllPosts() {
+      const chocolate = await Post.findAll({
+        attributes: {
+          exclude: ["deletedAt"],
+        },
+        where: { category: "chocolate" },
+        order: [['createdAt', 'DESC']],
         offset: 0,
         limit: 8
       });
+      const strawberry = await Post.findAll({
+        attributes: {
+          exclude: ["deletedAt"],
+        },
+        where: { category: "strawberry" },
+        order: [['createdAt', 'DESC']],
+        offset: 0,
+        limit: 8
+      });
+      const vanilla = await Post.findAll({
+        attributes: {
+          exclude: ["deletedAt"],
+        },
+        where: { category: "vanilla" },
+        order: [['createdAt', 'DESC']],
+        offset: 0,
+        limit: 8
+      });
+      const coding = await Post.findAll({
+        attributes: {
+          exclude: ["deletedAt"],
+        },
+        where: { category: "coding" },
+        order: [['createdAt', 'DESC']],
+        offset: 0,
+        limit: 8
+      });
+      return [
+        {label: "chocolate", items: chocolate},
+        {label: "strawberry", items: strawberry},
+        {label: "vanilla", items: vanilla},
+        {label: "coding", items: coding},
+      ];
     },
-    async getPost(_, { id }, context) {
-      return Post.findByPk(id);
+    async getCategoryPosts(_, { category }) {
+      return await Post.findAll({
+        offset: 0,
+        limit: 20,
+        where: { category }
+      });
+    },
+    async getPost(_, { id }) {
+      return await Post.findByPk(id);
     },
   },
   Post: {

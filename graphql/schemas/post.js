@@ -5,7 +5,6 @@ module.exports = gql`
 
   type Post {
     id: String!
-    email: String!
     category: String!
     title: String!
     html: String!
@@ -17,22 +16,28 @@ module.exports = gql`
   }
   
   extend type Query {
-    getAllPosts: [Post!]
+    getAllPosts: [CategoryPostResponse!]
     getCategoryPosts: [Post!]
     getPost(id: String!): Post
   }
   
   extend type Mutation {
-    createPost(title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): CreatePostResponse
-    modifyPost(id: String!, title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): CreatePostResponse
-    deletePost(id: String!): Int
+    createPost(title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): PostResponse
+    modifyPost(id: String!, title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): PostResponse
+    removePost(id: String!): String
   }
   
-  type CreatePostResponse {
+  type PostResponse {
     id: String!
     category: String!
     title: String!
     html: String!
     markdown: String!
+    image: [String]
+  }
+  
+  type CategoryPostResponse {
+    label: String!
+    items: [Post]
   }
 `;
