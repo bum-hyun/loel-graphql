@@ -4,17 +4,21 @@ const { AuthenticationError } = require('apollo-server-express');
 
 module.exports = {
   Mutation: {
-    async createPost(_, { email, category, title, html, markdown, image }, { user = null }) {
+    async createPost(_, { input }, { user = null }) {
       if (!user) {
         throw new AuthenticationError('You must login to create a post');
       }
       return await Post.create({
-        email,
-        category,
-        title,
-        html,
-        markdown,
-        image
+        ...input
+      });
+    },
+    async modifyPost(_, { id, input }, { user = null }) {
+      if (!user) {
+        throw new AuthenticationError('You must login to create a post');
+      }
+      return await Post.update({
+        id,
+        ...input
       });
     },
     async removePost(_, { id }) {
@@ -22,7 +26,7 @@ module.exports = {
     }
   },
   Query: {
-    async getAllPosts() {
+    async getAllPosts(_, {},{ user = null }) {
       const chocolate = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],

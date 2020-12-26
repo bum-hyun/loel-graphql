@@ -31,16 +31,16 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     },
   );
-  
-  User.beforeCreate(async (user) => { 
-    user.password = await user.generatePasswordHash();
-  });
-  
-  User.prototype.generatePasswordHash = () => { 
-    if (this.password) {
-      return bcrypt.hash(this.password, 10);
+
+  User.generatePasswordHash = async (password) => {
+    if (password) {
+      return await bcrypt.hash(password, 10);
     }
   };
+  
+  User.beforeCreate(async (user) => {
+    user.password = await User.generatePasswordHash(user.password);
+  });
   
   User.associate = (models) => { 
     User.hasMany(models.Post, { foreignKey: "email" })

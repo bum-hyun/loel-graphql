@@ -15,6 +15,15 @@ module.exports = gql`
     user: Author
   }
   
+  input EditPostInput {
+    email: String!
+    category: String!
+    title: String!
+    html: String!
+    markdown: String!
+    image: [String]
+  }
+  
   extend type Query {
     getAllPosts: [CategoryPostResponse!]
     getCategoryPosts(category: String!): [Post!]
@@ -22,8 +31,8 @@ module.exports = gql`
   }
   
   extend type Mutation {
-    createPost(title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): PostResponse
-    modifyPost(id: String!, title: String!, category: String!, title: String!, html: String!, markdown: String!, image: String!): PostResponse
+    createPost(input: EditPostInput!): PostResponse
+    modifyPost(id: String!, input: EditPostInput!): PostResponse
     removePost(id: String!): String
   }
   
@@ -34,6 +43,8 @@ module.exports = gql`
     html: String!
     markdown: String!
     image: [String]
+    createdAt: String!
+    updatedAt: String
   }
   
   type CategoryPostResponse {

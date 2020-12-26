@@ -14,6 +14,7 @@ const verifyToken = async (token) => {
 
 module.exports = async ({ req }) => {
   const token = (req.headers && req.headers.authorization) || '';
+  console.log("token", token)
   const user = await verifyToken(token)
   return { user };
 };
