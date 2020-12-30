@@ -14,11 +14,12 @@ module.exports = {
     },
     async modifyPost(_, { id, input }, { user = null }) {
       if (!user) {
-        throw new AuthenticationError('You must login to create a post');
+        throw new AuthenticationError('You must login to modify a post');
       }
       return await Post.update({
-        id,
         ...input
+      }, {
+        where: { id }
       });
     },
     async removePost(_, { id }) {
@@ -27,12 +28,13 @@ module.exports = {
   },
   Query: {
     async getAllPosts(_, {},{ user = null }) {
+      console.log(user)
       const chocolate = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
         },
         where: { category: "chocolate" },
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -41,7 +43,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "strawberry" },
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -50,7 +52,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "vanilla" },
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -59,7 +61,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "coding" },
-        order: [['createdAt', 'DESC']],
+        order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -74,7 +76,8 @@ module.exports = {
       return await Post.findAll({
         offset: 0,
         limit: 20,
-        where: { category }
+        where: { category },
+        order: [['updatedAt', 'DESC']],
       });
     },
     async getPost(_, { id }) {

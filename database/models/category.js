@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       isUse: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-      }
+      },
     },
     {
       underscored: true,

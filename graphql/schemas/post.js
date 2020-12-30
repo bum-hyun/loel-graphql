@@ -15,7 +15,16 @@ module.exports = gql`
     user: Author
   }
   
-  input EditPostInput {
+  input CreatePostInput {
+    email: String!
+    category: String!
+    title: String!
+    html: String!
+    markdown: String!
+    image: [String]
+  }
+  
+  input ModifyPostInput {
     email: String!
     category: String!
     title: String!
@@ -31,8 +40,8 @@ module.exports = gql`
   }
   
   extend type Mutation {
-    createPost(input: EditPostInput!): PostResponse
-    modifyPost(id: String!, input: EditPostInput!): PostResponse
+    createPost(input: CreatePostInput!): PostResponse
+    modifyPost(id: String!, input: ModifyPostInput!): [String]
     removePost(id: String!): String
   }
   
