@@ -7,6 +7,9 @@
     "dev": "nodemon index.js",
     "start": "cross-env NODE_ENV=production PORT=80 pm2 start index.js"
   },
+  "engines": {
+    "node": "14.15.1"
+  },
   "dependencies": {
     "apollo-server-express": "^2.19.0",
     "aws-sdk": "^2.814.0",
