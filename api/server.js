@@ -11,7 +11,6 @@ const dotenv = require('dotenv');
 const redis = require("redis");
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const hpp = require('hpp');
 dotenv.config();
 
 const redisClient = redis.createClient({
