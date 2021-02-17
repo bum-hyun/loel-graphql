@@ -10,7 +10,15 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? /loelblog\.com$/
+      : true,
+  methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  credentials: true,
+}));
 
 const apolloServer = new ApolloServer({
   typeDefs,
