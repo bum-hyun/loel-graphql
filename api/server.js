@@ -44,7 +44,7 @@ const sessionOption = {
   store: new RedisStore({ client: redisClient }),
 };
 
-apolloServer.applyMiddleware({ app, path: "/api" });
+apolloServer.applyMiddleware({ app, path: "/" });
 
 const server = createServer(app);
 
