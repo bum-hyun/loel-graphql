@@ -34,7 +34,7 @@ const apolloServer = new ApolloServer({
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-apolloServer.applyMiddleware({ app, path: "/" });
+apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 const server = createServer(app);
 
