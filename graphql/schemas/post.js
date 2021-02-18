@@ -60,4 +60,11 @@ module.exports = gql`
     label: String!
     items: [Post]
   }
+  
+  type upload {
+    eTag: String
+    location: String!
+    key: String!
+    bucket: String!
+  }
 `;

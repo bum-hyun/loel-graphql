@@ -24,6 +24,9 @@ module.exports = {
     },
     async removePost(_, { id }) {
       return await Post.destroy({ where: { id } });
+    },
+    async uploadFile(_, { file }) {
+      
     }
   },
   Query: {
