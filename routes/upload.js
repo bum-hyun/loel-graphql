@@ -1,8 +1,10 @@
-const AWS = require('aws-sdk');
-const multerS3 = require('multer-s3');
+const express = require('express');
 const multer = require('multer');
 const path = require('path');
-require("dotenv").config();
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+
+const router = express.Router();
 
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
@@ -20,3 +22,11 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+router.post('/', upload.single('img'), (req, res) => {
+  const originalUrl = req.file.location;
+  const url = originalUrl.replace(/\/original\//, '/thumb/');
+  res.json({ url, originalUrl });
+});
+
+
+module.exports = router;

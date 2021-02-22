@@ -8,6 +8,7 @@ const resolvers = require("../graphql/resolvers");
 const context = require("../graphql/context");
 const app = express();
 const dotenv = require('dotenv');
+const uploadRouter = require("../routes/upload");
 dotenv.config();
 
 app.use(cors());
@@ -25,6 +26,7 @@ const apolloServer = new ApolloServer({
 });
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use('/upload', uploadRouter);
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 const server = createServer(app);

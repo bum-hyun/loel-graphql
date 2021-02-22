@@ -25,54 +25,41 @@ module.exports = {
     async removePost(_, { id }) {
       return await Post.destroy({ where: { id } });
     },
-    async uploadFile(_, { file }) {
-      
-    }
   },
   Query: {
     async getAllPosts(_, {},{ user = null }) {
       console.log(user)
-      const chocolate = await Post.findAll({
+      const it = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
         },
-        where: { category: "chocolate" },
+        where: { category: "it" },
         order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
-      const strawberry = await Post.findAll({
+      const food = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
         },
-        where: { category: "strawberry" },
+        where: { category: "food" },
         order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
-      const vanilla = await Post.findAll({
+      const life = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
         },
-        where: { category: "vanilla" },
-        order: [['updatedAt', 'DESC']],
-        offset: 0,
-        limit: 8
-      });
-      const coding = await Post.findAll({
-        attributes: {
-          exclude: ["deletedAt"],
-        },
-        where: { category: "coding" },
+        where: { category: "life" },
         order: [['updatedAt', 'DESC']],
         offset: 0,
         limit: 8
       });
       return [
-        {label: "chocolate", items: chocolate},
-        {label: "strawberry", items: strawberry},
-        {label: "vanilla", items: vanilla},
-        {label: "coding", items: coding},
+        {label: "it", items: it},
+        {label: "food", items: food},
+        {label: "life", items: life},
       ];
     },
     async getCategoryPosts(_, { category }) {
