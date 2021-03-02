@@ -11,7 +11,18 @@ const dotenv = require('dotenv');
 const uploadRouter = require("../routes/upload");
 dotenv.config();
 
-app.use(cors());
+const allowlist = ['https://loelblog.com', 'https://www.loelblog.com']
+const corsOptionsDelegate = function (req, callback) {
+  let corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
+app.use(cors(corsOptionsDelegate));
 
 const apolloServer = new ApolloServer({
   typeDefs,
