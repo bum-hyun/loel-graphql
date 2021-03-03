@@ -12,23 +12,25 @@ const uploadRouter = require("../routes/upload");
 const anyRouter = require("../routes/any");
 dotenv.config();
 
-const allowlist = ['https://loelblog.com', 'https://www.loelblog.com']
-const corsOptionsDelegate = function (req, callback) {
-  let corsOptions;
-  if (allowlist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = { origin: true }
-  } else {
-    corsOptions = { origin: false }
-  }
-  corsOptions = { 
-    ...corsOptions,   
-    methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    credentials: true }
-  callback(null, corsOptions)
-}
+// const allowlist = ['https://loelblog.com', 'https://www.loelblog.com']
+// const corsOptionsDelegate = function (req, callback) {
+//   let corsOptions;
+//   if (allowlist.indexOf(req.header('Origin')) !== -1) {
+//     corsOptions = { origin: true }
+//   } else {
+//     corsOptions = { origin: false }
+//   }
+//   corsOptions = { 
+//     ...corsOptions,   
+//     methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE',
+//     preflightContinue: false,
+//     credentials: true }
+//   callback(null, corsOptions)
+// }
+//
+// app.use(cors(corsOptionsDelegate))
 
-app.use(cors(corsOptionsDelegate))
+app.options('*', cors())
 
 const apolloServer = new ApolloServer({
   typeDefs,
