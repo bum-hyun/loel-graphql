@@ -30,7 +30,7 @@ dotenv.config();
 //
 // app.use(cors(corsOptionsDelegate))
 
-app.options('*', cors())
+app.options(cors())
 
 const apolloServer = new ApolloServer({
   typeDefs,
