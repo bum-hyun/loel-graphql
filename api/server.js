@@ -30,7 +30,7 @@ dotenv.config();
 //
 // app.use(cors(corsOptionsDelegate))
 
-app.options(cors())
+app.options(cors({preflightContinue: false, credentials: true}))
 
 const apolloServer = new ApolloServer({
   typeDefs,
