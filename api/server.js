@@ -22,8 +22,8 @@ const corsOptionsDelegate = function (req, callback) {
   corsOptions = { 
     ...corsOptions,   
     methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE,HEAD',
-    credentials: true, 
-    preflight: false
+    credentials: true,
+    preflightContinue: false
   }
   callback(null, corsOptions)
 }
