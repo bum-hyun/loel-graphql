@@ -14,7 +14,7 @@ AWS.config.update({
 const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
-    bucket: 'loel-s3-bucket',
+    bucket: 'images.loelblog.com',
     key(req, file, cb) {
       cb(null, `original/${Date.now()}${path.basename(file.originalname)}`);
     },
