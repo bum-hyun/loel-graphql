@@ -11,7 +11,7 @@ const dotenv = require('dotenv');
 const uploadRouter = require("../routes/upload");
 dotenv.config();
 
-const allowlist = ['https://loelblog.com', 'https://www.loelblog.com']
+const allowlist = ['http://localhost:3000', 'https://loelblog.com', 'https://www.loelblog.com']
 const corsOptionsDelegate = function (req, callback) {
   let corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
@@ -21,8 +21,9 @@ const corsOptionsDelegate = function (req, callback) {
   }
   corsOptions = { 
     ...corsOptions,   
-    methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE',
-    credentials: true 
+    methods: 'OPTIONS,GET,PUT,PATCH,POST,DELETE,HEAD',
+    credentials: true, 
+    preflight: false
   }
   callback(null, corsOptions)
 }
@@ -43,6 +44,8 @@ const apolloServer = new ApolloServer({
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use('/upload', uploadRouter);
+app.use('/resize', uploadRouter);
+
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 const server = createServer(app);

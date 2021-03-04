@@ -18,12 +18,13 @@ const upload = multer({
     key(req, file, cb) {
       cb(null, `original/${Date.now()}${path.basename(file.originalname)}`);
     },
+    
   }),
   limits: { fileSize: 20 * 1024 * 1024 },
 });
 
 router.post('/', upload.single('img'), (req, res) => {
-  const originalUrl = req.file.location;
+  const originalUrl = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
   const url = originalUrl.replace(/\/original\//, '/thumb/');
   res.json({ url, originalUrl });
 });
