@@ -34,7 +34,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "it" },
-        order: [['updatedAt', 'DESC']],
+        order: [['createdAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -43,7 +43,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "food" },
-        order: [['updatedAt', 'DESC']],
+        order: [['createdAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -52,7 +52,7 @@ module.exports = {
           exclude: ["deletedAt"],
         },
         where: { category: "life" },
-        order: [['updatedAt', 'DESC']],
+        order: [['createdAt', 'DESC']],
         offset: 0,
         limit: 8
       });
@@ -67,7 +67,7 @@ module.exports = {
         offset: 0,
         limit: 20,
         where: { category },
-        order: [['updatedAt', 'DESC']],
+        order: [['createdAt', 'DESC']],
       });
     },
     async getPost(_, { id }) {
