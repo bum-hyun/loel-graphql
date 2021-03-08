@@ -47,6 +47,15 @@ module.exports = {
         offset: 0,
         limit: 8
       });
+      const investment = await Post.findAll({
+        attributes: {
+          exclude: ["deletedAt"],
+        },
+        where: { category: "investment" },
+        order: [['createdAt', 'DESC']],
+        offset: 0,
+        limit: 8
+      });
       const life = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
@@ -59,6 +68,7 @@ module.exports = {
       return [
         {label: "it", items: it},
         {label: "food", items: food},
+        {label: "investment", items: investment},
         {label: "life", items: life},
       ];
     },
