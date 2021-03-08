@@ -7,6 +7,11 @@ const sharp = require("sharp");
 
 const router = express.Router();
 
+const arrayForSize = [
+  { size: 600, dir: "thumb" },
+  { size: 1200, dir: "contents" }
+];
+
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
@@ -34,21 +39,25 @@ router.post('/', upload.single('img'), async (req, res) => {
   const requiredFormat = ext === "jpg" ? "jpeg" : ext;
 
   const s3Object = await s3.getObject({Bucket, Key}).promise();
-  const resizedImage = await sharp(s3Object.Body).resize(600).toFormat(requiredFormat).toBuffer();
+  
+  for (const item of arrayForSize) {
+    const resizedImage = await sharp(s3Object.Body).resize(item.size).toFormat(requiredFormat).toBuffer();
 
-  try {
-    await s3.putObject({
-      Bucket,
-      Key: `thumb/${filename}`,
-      Body: resizedImage,
-      ContentType: "image"
-    }).promise();
+    try {
+      await s3.putObject({
+        Bucket,
+        Key: `${item.dir}/${filename}`,
+        Body: resizedImage,
+        ContentType: "image"
+      }).promise();
 
-    const original = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
-    const url = original.replace(/\/original\//, '/thumb/');
-    res.json({ thumb: url, original });
-  } catch (e) {
-    console.error("catch", error);
+      const original = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
+      const thumb = original.replace(/\/original\//, '/thumb/');
+      const contents = original.replace(/\/original\//, '/contents/');
+      res.json({ thumb, original, contents });
+    } catch (e) {
+      console.error("catch", error);
+    }
   }
 
 });
