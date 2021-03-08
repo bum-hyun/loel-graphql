@@ -28,7 +28,6 @@ module.exports = {
   },
   Query: {
     async getAllPosts(_, {},{ user = null }) {
-      console.log(user)
       const it = await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
