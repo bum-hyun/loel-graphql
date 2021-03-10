@@ -22,7 +22,7 @@ const upload = multer({
     s3: new AWS.S3(),
     bucket: 'images.loelblog.com',
     key(req, file, cb) {
-      cb(null, `original/${Date.now()}${path.basename(file.originalname)}`);
+      cb(null, `original/${Date.now()}-${path.basename(file.originalname)}`);
     },
     contentType: multerS3.AUTO_CONTENT_TYPE
   }),
@@ -50,15 +50,15 @@ router.post('/', upload.single('img'), async (req, res) => {
         Body: resizedImage,
         ContentType: "image"
       }).promise();
-
-      const original = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
-      const thumb = original.replace(/\/original\//, '/thumb/');
-      const contents = original.replace(/\/original\//, '/contents/');
-      res.json({ thumb, original, contents });
     } catch (e) {
-      console.error("catch", error);
+      console.error("catch", e);
     }
   }
+
+  const original = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
+  const thumb = original.replace(/\/original\//, '/thumb/');
+  const contents = original.replace(/\/original\//, '/contents/');
+  res.json({ thumb, original, contents });
 
 });
 
