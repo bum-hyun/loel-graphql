@@ -87,5 +87,8 @@ module.exports = {
     user(post) {
       return post.getUser();
     },
+    // async comments(post) {
+    //   return post.getComments();
+    // }
   },
 };

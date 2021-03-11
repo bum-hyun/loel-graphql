@@ -3,19 +3,39 @@ const { gql } = require('apollo-server-express');
 module.exports = gql`
   type Comment {
     id: Int!
-    content: String!
-    user: User!
+    name: String!
+    password: String!
+    contents: String!
+    email: User!
     post: Post!
-    createdAt: String
+    parent: Int
+    class: Int!
+    createdAt: Date!
+  }
+  
+  input PostComment {
+    name: String!
+    password: String!
+    parent: Int
+    class: Int!
+    contents: String!
+  }
+  
+  extend type Query {
+    getComments(postId: String!): [CreateCommentResponse]
   }
   
   extend type Mutation {
-     createComment(content: String!, postId: Int!): CreateCommentResponse
+     createComment(comment: PostComment!, postId: String!, email: String): CreateCommentResponse
   }
   
   type CreateCommentResponse {
     id: Int!
-    content: String!
-    createdAt: String!
+    name: String!
+    contents: String!
+    email: String
+    parent: Int
+    class: Int!
+    createdAt: Date!
   }
 `;
