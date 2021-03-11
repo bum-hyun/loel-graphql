@@ -8,6 +8,7 @@ module.exports = gql`
     category: String!
     title: String!
     html: String!
+    html2: String
     markdown: String!
     image: [String]
     createdAt: Date
@@ -20,6 +21,7 @@ module.exports = gql`
     category: String!
     title: String!
     html: String!
+    html2: String
     markdown: String!
     image: [String]
   }
@@ -29,6 +31,7 @@ module.exports = gql`
     category: String!
     title: String!
     html: String!
+    html2: String
     markdown: String!
     image: [String]
   }
@@ -50,6 +53,7 @@ module.exports = gql`
     category: String!
     title: String!
     html: String!
+    html2: String
     markdown: String!
     image: [String]
     createdAt: String!

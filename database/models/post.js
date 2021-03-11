@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      html2: {
+        type: DataTypes.STRING,
+      },
       markdown: {
         type: DataTypes.STRING,
         allowNull: false,
