@@ -28,48 +28,14 @@ module.exports = {
   },
   Query: {
     async getAllPosts(_, {},{ user = null }) {
-      const it = await Post.findAll({
+      return await Post.findAll({
         attributes: {
           exclude: ["deletedAt"],
         },
-        where: { category: "it" },
         order: [['createdAt', 'DESC']],
         offset: 0,
-        limit: 8
+        limit: 24
       });
-      const food = await Post.findAll({
-        attributes: {
-          exclude: ["deletedAt"],
-        },
-        where: { category: "food" },
-        order: [['createdAt', 'DESC']],
-        offset: 0,
-        limit: 8
-      });
-      const investment = await Post.findAll({
-        attributes: {
-          exclude: ["deletedAt"],
-        },
-        where: { category: "investment" },
-        order: [['createdAt', 'DESC']],
-        offset: 0,
-        limit: 8
-      });
-      const life = await Post.findAll({
-        attributes: {
-          exclude: ["deletedAt"],
-        },
-        where: { category: "life" },
-        order: [['createdAt', 'DESC']],
-        offset: 0,
-        limit: 8
-      });
-      return [
-        {label: "it", items: it},
-        {label: "food", items: food},
-        {label: "investment", items: investment},
-        {label: "life", items: life},
-      ];
     },
     async getCategoryPosts(_, { category }) {
       return await Post.findAll({
