@@ -37,7 +37,7 @@ module.exports = gql`
   }
   
   extend type Query {
-    getAllPosts: [CategoryPostResponse!]
+    getAllPosts: [Post!]
     getCategoryPosts(category: String!): [Post!]
     getPost(id: String!): Post
   }
@@ -58,10 +58,5 @@ module.exports = gql`
     image: [String]
     createdAt: String!
     updatedAt: String
-  }
-  
-  type CategoryPostResponse {
-    label: String!
-    items: [Post]
   }
 `;
