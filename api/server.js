@@ -9,6 +9,7 @@ const context = require("../graphql/context");
 const app = express();
 const dotenv = require('dotenv');
 const uploadRouter = require("../routes/upload");
+const postRouter = require("../routes/post");
 dotenv.config();
 
 const allowlist = ['http://localhost:3000', 'https://loelblog.com', 'https://www.loelblog.com']
@@ -45,6 +46,7 @@ const apolloServer = new ApolloServer({
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use('/upload', uploadRouter);
 app.use('/resize', uploadRouter);
+app.use('/post', postRouter);
 
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
