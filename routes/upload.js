@@ -33,36 +33,38 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 },
 });
 
-router.post('/', upload.single('img'), async (req, res) => {
-  const s3 = new AWS.S3();
-  const Bucket = req.file.bucket;
-  const Key = req.file.key;
-  const filename = Key.split("/")[Key.split("/").length - 1];
-  const ext = Key.split(".")[Key.split("/").length - 1];
-  const requiredFormat = ext === "jpg" ? "jpeg" : ext;
+router.post('/', upload.array('images', 20), async (req, res) => {
+  const results = await Promise.all(req.files.map(async (file) => {
+    const s3 = new AWS.S3();
+    const Bucket = file.bucket;
+    const Key = file.key;
+    const filename = Key.split("/")[Key.split("/").length - 1];
+    const ext = Key.split(".")[Key.split("/").length - 1];
+    const requiredFormat = ext === "jpg" ? "jpeg" : ext;
 
-  const s3Object = await s3.getObject({Bucket, Key}).promise();
-  
-  for (const item of arrayForSize) {
-    const resizedImage = await sharp(s3Object.Body).resize(item.size).toFormat(requiredFormat).toBuffer();
+    const s3Object = await s3.getObject({Bucket, Key}).promise();
 
-    try {
-      await s3.putObject({
-        Bucket,
-        Key: `${item.dir}/${filename}`,
-        Body: resizedImage,
-        ContentType: "image"
-      }).promise();
-    } catch (e) {
-      console.error("catch", e);
+    for (const item of arrayForSize) {
+      const resizedImage = await sharp(s3Object.Body).resize(item.size).toFormat(requiredFormat).toBuffer();
+
+      try {
+        await s3.putObject({
+          Bucket,
+          Key: `${item.dir}/${filename}`,
+          Body: resizedImage,
+          ContentType: "image"
+        }).promise();
+      } catch (e) {
+        console.error("catch", e);
+      }
     }
-  }
 
-  const original = req.file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
-  const thumb = original.replace(/original\//, `thumb/`);
-  const contents = original.replace(/original\//, `contents/`);
-  res.json({ thumb, original, contents });
-
+    const original = file.location.replace("s3.ap-northeast-2.amazonaws.com/", "");
+    const thumb = original.replace(/original\//, `thumb/`);
+    const contents = original.replace(/original\//, `contents/`);
+    return { thumb, original, contents }
+  }));
+  res.json(results);
 });
 
 module.exports = router;
