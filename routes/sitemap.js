@@ -1,5 +1,5 @@
 const express = require('express');
-const { generateSitemap } = require('../utils/sitemap');
+const generateSitemap = require('../utils/sitemap');
 
 const router = express.Router();
 
