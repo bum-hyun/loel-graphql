@@ -33,7 +33,8 @@
     "redis": "^3.0.2",
     "sanitize-html": "^2.3.0",
     "sequelize": "^6.3.5",
-    "sharp": "^0.27.2"
+    "sharp": "^0.27.2",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
