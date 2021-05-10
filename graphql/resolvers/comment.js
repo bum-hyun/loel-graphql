@@ -14,9 +14,6 @@ module.exports = {
   },
   Mutation: {
     async createComment(_, { comment, postId, email }, { user = null }) {
-      if (!user) {
-        throw new AuthenticationError('You must login to create a comment');
-      }
 
       const post = await Post.findByPk(postId);
 
