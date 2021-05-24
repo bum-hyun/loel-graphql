@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     },
     order: [['createdAt', 'DESC']],
     offset: 0,
-    limit: 24
+    limit: 50
   });
   res.status(200).json(data)
 });
