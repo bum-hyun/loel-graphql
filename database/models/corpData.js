@@ -1,23 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
-	const CorpCode = sequelize.define(
-		"CorpCode",
+	const CorpData = sequelize.define(
+		"CorpData",
 		{
-			stock_code: {
+			corp_code: {
 				type: DataTypes.STRING,
 				primaryKey: true,
+				allowNull: false
+			},
+			stock_code: {
+				type: DataTypes.STRING,
 				allowNull: false
 			},
 			stock_name: {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			corp_code: {
+			data: {
 				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			market: {
-				type: DataTypes.STRING,
-				allowNull: false,
 			},
 		},
 		{
@@ -25,14 +24,14 @@ module.exports = (sequelize, DataTypes) => {
 			charset: 'utf8mb4',
 			collate: 'utf8mb4_general_ci',
 			paranoid: false,
-			modelName: 'CorpCode',
-			tableName: 'corpCode',
+			modelName: 'CorpData',
+			tableName: 'corpData',
 			timestamps: false
 		},
 	);
 
-	CorpCode.associate = (models) => {
+	CorpData.associate = (models) => {
 	}
 
-	return CorpCode;
+	return CorpData;
 }

@@ -11,6 +11,8 @@ const dotenv = require('dotenv');
 const uploadRouter = require("../routes/upload");
 const postRouter = require("../routes/post");
 const dartRouter = require("../routes/dart");
+const dataRouter = require("../routes/data");
+const excelRouter = require("../routes/excel");
 dotenv.config();
 
 const allowlist = ['http://localhost:3000', 'https://loelblog.com', 'https://www.loelblog.com']
@@ -49,6 +51,8 @@ app.use('/upload', uploadRouter);
 app.use('/resize', uploadRouter);
 app.use('/post', postRouter);
 app.use('/dart', dartRouter);
+app.use('/data', dataRouter);
+app.use('/excel', excelRouter);
 
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
