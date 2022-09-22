@@ -1,10 +1,11 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const { basename } = require('path');
 const AWS = require('aws-sdk');
 const multerS3 = require('multer-s3');
 const sharp = require("sharp");
-
+require('dotenv').config();
+const bucket = "images.loelblog.com";
 const router = express.Router();
 
 const devDir = { thumb: "test-thumb", contents: "test-contents", original: "test-original" };
@@ -19,14 +20,14 @@ const arrayForSize = [
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID,
   secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: 'ap-northeast-2',
+  region: process.env.S3_REGION,
 });
 const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
-    bucket: 'images.loelblog.com',
+    bucket,
     key(req, file, cb) {
-      cb(null, `${process.env.NODE_ENV === "production" ? prodDir.original : devDir.original}/${Date.now()}-${path.basename(file.originalname)}`);
+      cb(null, `${process.env.NODE_ENV === "production" ? prodDir.original : devDir.original}/${Date.now()}-${basename(file.originalname)}`);
     },
     contentType: multerS3.AUTO_CONTENT_TYPE
   }),
