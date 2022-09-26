@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 module.exports = gql`
   type Category {
     category: String!
-    link: String!
+    name: String!
     order: Int!
     parent: String
     isUse: Boolean!
